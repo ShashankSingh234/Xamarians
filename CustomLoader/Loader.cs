@@ -1,11 +1,21 @@
-﻿using Xamarians.Interfaces;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Xamarians.Interfaces;
 using Xamarin.Forms;
 
 namespace Xamarians
 {
     public class Loader
     {
-        public static StackLayout RegisterLoader(ContentPage contentPage, string imageName)
+        /// <summary>
+        /// Initialize loader.
+        /// </summary>
+        /// <param name="contentPage">Page on which loader will be registered.</param>
+        /// <param name="imageName">Loader image name with extention.</param>
+        /// <param name="loadingMessage">Message to show with loader.</param>
+        /// <returns></returns>
+        public static StackLayout RegisterLoader(ContentPage contentPage, string imageName, string loadingMessage = null)
         {
             var content = contentPage.Content;
             var overlay = new AbsoluteLayout
@@ -23,11 +33,16 @@ namespace Xamarians
 
             activityIndicatorWebView.Source = new HtmlWebViewSource
             {
-                Html = $@"<html><body bgcolor='#0e0e0e'>
-                            <img src='{imageName}'
-                            style='position:absolute; top:50%; left:50%; margin-top:-25px; margin-left:-25px; height:50px; width:50px' />
-                            </body>
-                            </html>",
+                Html = $@"<html>
+                        <body bgcolor = '#0e0e0e'>
+                        <div style = 'height: 100%; position: relative;'>
+                          <div style = 'margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center;'>
+                          <img src = '{imageName}' style = 'height:50px; width:50px'/>
+                          <p style = 'color:white;'>{loadingMessage}</p>
+                          </div>
+                        </div>
+                        </body>
+                        </html>",
                 BaseUrl = DependencyService.Get<IGif>().GetGifImageUrl()
             };
 
@@ -48,7 +63,6 @@ namespace Xamarians
             overlay.Children.Add(content);
             overlay.Children.Add(stackLayout);
 
-            //activityIndicator.IsRunning = true;
             stackLayout.IsVisible = false;
 
             return stackLayout;

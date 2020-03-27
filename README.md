@@ -1,21 +1,17 @@
-# Xamarians.CustomLoader
+# Loader
    Cross platform library to change loader image.
    
-First install package from nuget using following command -
-## Install-Package Xamarians.CropImage
 
 You can integrate the loader in Xamarin Form application using following code:
 
 Shared Code -
-
-Crop Image:- 
 
 ```c#
 using Xamarians;
 
 ...
 
-StackLayout loaderLayout = await Loader.RegisterLoader(this, Image name with extention);
+StackLayout loaderLayout = await Loader.RegisterLoader(this, Image name with extention, Message to show with loader);
 
 ...
 
@@ -41,14 +37,13 @@ using Xamarians.Interfaces;
 
 ...
 
-
-	public class GifImageUrl : IGif
-    {
-        public string GetGifImageUrl()
-        {            
-            return "file:///android_asset/";
-        }
+public class GifImageUrl : IGif
+{
+    public string GetGifImageUrl()
+    {            
+        return "file:///android_asset/";
     }
+}
 ```
 
 iOS -
@@ -66,12 +61,11 @@ using Xamarians.Interfaces;
 
 ...
 
-
-	public class GifImageUrl : IGif
-    {
-        public string GetGifImageUrl()
-        {            
-            return Foundation.NSBundle.MainBundle.BundlePath;
-        }
+public class GifImageUrl : IGif
+{
+    public string GetGifImageUrl()
+    {            
+        return Foundation.NSBundle.MainBundle.BundlePath;
     }
+}
 ```
